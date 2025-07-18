@@ -5,7 +5,7 @@ import json
 import os
 import asyncio
 from functools import wraps
-from config import MONTHLY_WRITE_CAP, USAGE_FILE
+from config import MONTHLY_WRITE_CAP
 from twitter.api import client, api
 import tweepy
 
@@ -14,16 +14,16 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 def retry_on_rate_limit(max_retries=3, backoff_factor=2):
     def decorator(func):
         @wraps(func)
-        def wrapper(*args, **kwargs):
+        async def wrapper(*args, **kwargs):
             retries = 0
             while retries < max_retries:
                 try:
-                    return func(*args, **kwargs)
+                    return await func(*args, **kwargs)
                 except (tweepy.TooManyRequests, tweepy.TweepyException) as e:
                     if isinstance(e, tweepy.TooManyRequests):
                         wait_time = backoff_factor ** retries
                         logging.warning(f"Rate limit hit: {e}. Retrying in {wait_time}s...")
-                        time.sleep(wait_time)
+                        await asyncio.sleep(wait_time)
                         retries += 1
                     else:
                         logging.error(f"API error: {e}")
@@ -71,7 +71,7 @@ def init_db():
     conn.commit()
     conn.close()
 
-def track_usage(reset=False):
+def get_usage():
     init_db()
     conn = sqlite3.connect('usage.db')
     c = conn.cursor()

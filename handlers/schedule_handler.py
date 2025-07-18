@@ -5,8 +5,6 @@ import asyncio
 import schedule
 import time
 
-queued_posts = []
-
 @bot.message_handler(commands=['schedule'])
 async def handle_schedule(message):
     if message.from_user.id != TELEGRAM_USER_ID:
@@ -24,7 +22,8 @@ async def handle_schedule(message):
     await bot.reply_to(message, f"Scheduled in ~{mins} mins.")
 
 def post_scheduled_tweet(text):
-    asyncio.run(post_tweet_with_media(text))
+    loop = asyncio.get_event_loop()
+    asyncio.run_coroutine_threadsafe(post_tweet_with_media(text), loop)
 
 def run_scheduler():
     while True:
