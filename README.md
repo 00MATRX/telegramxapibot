@@ -15,6 +15,16 @@ This bot allows a user to manage a Twitter account through Telegram. It provides
 - **Usage Tracking:** Monitors the number of posts made in a month to avoid hitting API limits.
 - **Confirmation Dialogs:** Asks for confirmation before posting to prevent accidental tweets.
 
+## Architecture
+
+The bot is built with a modular architecture that separates the different components of the application. The main components are:
+
+- **`main.py`:** The entry point of the application. It initializes the Telegram bot and the Twitter API, and sets up the handlers.
+- **`telegram/`:** This package contains the Telegram bot implementation.
+- **`twitter/`:** This package contains the Twitter API implementation.
+- **`handlers/`:** This package contains the handlers for the different Telegram commands and messages.
+- **`config.py`:** This file contains the configuration for the bot, such as the API keys and tokens.
+
 ## Setup and Installation
 
 1. **Clone the repository:**
