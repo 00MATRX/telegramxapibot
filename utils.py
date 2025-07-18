@@ -4,6 +4,7 @@ import logging
 import time
 import json
 import os
+import asyncio
 from functools import wraps
 from config import MONTHLY_WRITE_CAP, USAGE_FILE
 
@@ -36,7 +37,10 @@ async def post_tweet_with_media(client, api, text, media_paths=None, reply_to_id
     if media_paths:
         for path in media_paths:
             try:
-                media = api.media_upload(filename=path)
+                # The `media_upload` method is on the `API` object, not the `Client` object.
+                # It's also a synchronous method, so we need to run it in a separate thread.
+                loop = asyncio.get_event_loop()
+                media = await loop.run_in_executor(None, lambda: api.media_upload(filename=path))
                 media_ids.append(media.media_id_string)
                 logging.info(f"Media uploaded: {media.media_id}")
             except tweepy.TweepyException as e:

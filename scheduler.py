@@ -16,7 +16,7 @@ def run_scheduler(client, api, bot):
             except Exception as e:
                 await bot.send_message(TELEGRAM_USER_ID, f"Scheduled post failed: {str(e)}")
 
-    schedule.every(1).minutes.do(asyncio.run_coroutine_threadsafe(process_queue(), asyncio.get_event_loop()).result)
+    schedule.every(1).minutes.do(lambda: asyncio.run_coroutine_threadsafe(process_queue(), asyncio.get_event_loop()))
 
     while True:
         schedule.run_pending()
