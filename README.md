@@ -1,4 +1,4 @@
-# Telegram xAPI Bot
+Telegram-X-Poster Bot
 This is a Python-based Telegram bot that allows you to post text, photos, videos, and animations to X (formerly Twitter) directly from Telegram. It includes advanced features like scheduling posts, replying to tweets, usage tracking for Free tier compliance, and a modern UI with custom keyboards and inline buttons for an interactive experience. Built for personal use on platforms like Replit.
 Features
 	•	Post Content to X: Send text, photos, videos, or GIFs from Telegram to X.
