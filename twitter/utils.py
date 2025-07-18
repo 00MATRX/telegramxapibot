@@ -71,7 +71,6 @@ def init_db():
     conn.close()
 
 def get_usage():
-    init_db()
     conn = sqlite3.connect('usage.db')
     c = conn.cursor()
 
