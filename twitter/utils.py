@@ -57,7 +57,6 @@ async def post_tweet_with_media(text, media_paths=None, reply_to_id=None):
         logging.error(f"Post failed: {e}")
         raise
 
-import sqlite3
 
 def init_db():
     conn = sqlite3.connect('usage.db')
