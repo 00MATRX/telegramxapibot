@@ -25,5 +25,4 @@ async def main():
     await bot.infinity_polling()
 
 if __name__ == "__main__":
-    track_usage()
     asyncio.run(main())

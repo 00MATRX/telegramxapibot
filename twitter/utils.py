@@ -6,7 +6,7 @@ import os
 import asyncio
 from functools import wraps
 from config import MONTHLY_WRITE_CAP, USAGE_FILE
-from twitter.api import client, api
+from twitter.api import twitter_api
 import tweepy
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -38,10 +38,8 @@ async def post_tweet_with_media(text, media_paths=None, reply_to_id=None):
     if media_paths:
         for path in media_paths:
             try:
-                # The `media_upload` method is on the `API` object, not the `Client` object.
-                # It's also a synchronous method, so we need to run it in a separate thread.
                 loop = asyncio.get_event_loop()
-                media = await loop.run_in_executor(None, lambda: api.media_upload(filename=path))
+                media = await loop.run_in_executor(None, lambda: twitter_api.api.media_upload(filename=path))
                 media_ids.append(media.media_id_string)
                 logging.info(f"Media uploaded: {media.media_id}")
             except tweepy.TweepyException as e:
@@ -49,7 +47,7 @@ async def post_tweet_with_media(text, media_paths=None, reply_to_id=None):
                 raise
 
     try:
-        response = client.create_tweet(text=text, media_ids=media_ids if media_ids else None, in_reply_to_tweet_id=reply_to_id)
+        response = twitter_api.client.create_tweet(text=text, media_ids=media_ids if media_ids else None, in_reply_to_tweet_id=reply_to_id)
         logging.info(f"Posted: https://x.com/i/status/{response.data['id']}")
         track_usage()
         return response
