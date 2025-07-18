@@ -5,7 +5,7 @@ import json
 import os
 import asyncio
 from functools import wraps
-from config import MONTHLY_WRITE_CAP
+from config import MONTHLY_WRITE_CAP, USAGE_FILE
 from twitter.api import client, api
 import tweepy
 
@@ -104,3 +104,5 @@ async def download_media(url):
             resp.raise_for_status()
             return await resp.read()
 
+# Init tracking
+track_usage()
