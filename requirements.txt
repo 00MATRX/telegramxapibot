@@ -1,0 +1,6 @@
+tweepy==4.16.0
+pyTelegramBotAPI==4.27.0
+requests==2.32.4
+aiohttp==3.12.14
+python-dotenv==1.1.1
+schedule==1.2.2
